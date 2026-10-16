@@ -4,6 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Xchange</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
     
     <script defer src="script.js"></script>
     <link rel="stylesheet" href="style.css">
@@ -12,21 +15,30 @@
     <div class="container">
 
             <section class="container__content">
-                <img src="" alt="Xchange logo">
+                <img src="" alt="Xchange logo" class="container__img">
+                
                 <form action="post" class="form">
                 
-                    <input type="text" class="form__input form__input--base">
-                    <button type="button" class="button button--swap">&hArr;</button>
-                    <input type="text" class="form__input form__input--target">
-
+                    <label for="base">Pick a currency:</label>
+                    <select id="base" name="base"></select><br>
+                    <input  type="text" class="form__input form__input--base" name="base" value="1"><br>
+                    
+                    <button type="button" class="button button--swap">&hArr;</button><br>
+                    
+                    <label for="target">Pick a currency:</label>
+                    <select id="target" name="target"></select><br>
+                    <input type="text" class="form__input form__input--target" name="target" value="2">
+                    <br>
                     <button type="submit" class="btn">Convert</button>
 
 
                 </form>
 
+                <footer class="container__footer">
 
-
-
+                    <p>&copy; copyright</p>
+                
+                </footer>
 
             </section>
 
@@ -36,11 +48,7 @@
 
             </section>
 
-            <footer class="container__footer">
 
-                <p>&copy; copyright</p>
-                
-            </footer>
 
 
     </div>
