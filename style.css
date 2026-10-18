@@ -108,35 +108,23 @@ body{
     }
 }
 .form__select{
-    background-color: white;
+    background-color: transparent;
     border:none;
     padding:.6rem 1rem;
     border-radius: 15px;
-    font-size: 2rem;
+    font-size: 2.4rem;
     outline: 0 solid var(--color-select);
-    &:open{
-        background-color: white;
-
-
-    }
-
-    option{
-        background:white;
-
-    }
+    color:inherit;
+    font-family: inherit;
 }
-.form__select:focus-within,.form__select:focus-visible,.form__select:focus{
-    outline:.3rem solid var(--color-select);
-    transition: .1s all;
-    
-}
+
 .form__label{
     line-height: 1.6;
 
 }
 .form__select-styling{
 
-    background-color: #0aa44a72;
+    background-color: #0aa44abd;
     border-top-right-radius: 50px;
     border-top-left-radius: 50px;
     padding:.9rem 1.5rem;
@@ -156,15 +144,16 @@ body{
 
 /* 
 
-.form__select-styling{
-
-    background-color: grey;
-    border-top-right-radius: 10px;
-    border-top-left-radius: 10px;
-    padding:.5rem 1.5rem;
-    padding-bottom: 3rem;
-    margin-block:-3rem;
+.form__select{
+    background-color: transparent;
+    border:none;
+    padding:.6rem 1rem;
+    border-radius: 15px;
+    font-size: 2.4rem;
+    outline: 0 solid var(--color-select);
+    color:inherit;
 }
+
  if not supported
 */
 .form{
