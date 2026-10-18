@@ -63,7 +63,8 @@ body{
 
 .container__img{
     position: absolute;
-    top:5rem;
+    top:1rem;
+    width:33rem;
 }
 
 .form__input{
@@ -116,30 +117,39 @@ body{
     outline: 0 solid var(--color-select);
     color:inherit;
     font-family: inherit;
+    cursor:inherit;
+
 }
 
 .form__label{
     line-height: 1.6;
-
+    cursor:inherit;
 }
 .form__select-styling{
 
-    background-color: #0aa44abd;
+    background-color: rgba(10, 164, 74, 0.6);
     border-top-right-radius: 50px;
     border-top-left-radius: 50px;
     padding:.9rem 1.5rem;
-    padding-bottom: 3rem;
+    padding-bottom: 5rem;
     position: absolute;
     width:100%;
     display:flex;
-    justify-content: space-around;
+    justify-content: flex-end;
     align-items: flex-end;
     font-size: 2.7rem;
     box-shadow: 0 0 1rem rgba(0, 0, 0, 0.1);
+    transition: all .2s;
+}
+.form__select-styling:hover,.form__select-styling:active,.form__select-styling:focus,.form__select-styling:has(.form__select:hover){
+    transform: translateY(-.3rem);
+    background-color: rgba(10, 164, 74, 0.741);
+
 }
 .container__footer{
     position: absolute;
-    bottom:5rem;
+    bottom:3rem;
+    font-size: 1.8rem;
 }
 
 /* 
@@ -169,7 +179,7 @@ gap:2rem;
     border:none;
     cursor:pointer;
     position: relative;
-    padding:1.2rem 1.8rem;
+    padding:1.2rem 1.9rem;
     border-radius: 50%;
     font-size: 3rem;
     box-shadow: 0 0 1rem rgba(0, 0, 0, 0.1);
@@ -183,7 +193,7 @@ animation-fill-mode: reverse;
     left: 50%;
     width: 0%;
     height: 0%;
-    background-color: var(--color-complimentery);
+    background:radial-gradient(var(--color-primary),var(--color-complimentery)) ;
     border-radius: inherit;
     transform: translate(-50%, -50%);
     transition: width .3s cubic-bezier(0.24, 1.006, 1, 0.983),
@@ -218,5 +228,41 @@ color:white;
 
 .form__input-box{
     position: relative;
+    cursor: pointer;
+}
 
+
+select{
+
+    text-align: start;
+    &,&::picker(select){
+        appearance: base-select;
+        padding:.5rem;
+        backdrop-filter: blur(8px);
+        -webkit-backdrop-filter: blur(8px);
+        background-color: #0000002a;
+        border:none;
+        border-bottom:1px black solid;
+        border-left:1px black solid;
+        border-right:1px black solid;
+
+        border-bottom-left-radius: 10px;
+        border-bottom-right-radius: 10px;
+
+    }
+    &::picker(select){
+        margin-block-start: .3rem;
+
+    }
+    &::picker-icon{
+        display:none;
+    }
+
+}
+.select__picker-icon{
+width:1.2em;
+height: 1em;
+display:inline;
+position: relative;
+bottom:-.5rem;
 }

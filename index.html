@@ -4,9 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Xchange</title>
+     <link rel="icon" type="image/x-icon" href="img/icon.png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
     
     <script defer src="script.js"></script>
     <link rel="stylesheet" href="style.css">
@@ -15,13 +16,16 @@
     <div class="container">
 
             <section class="container__content">
-                <img src="" alt="Xchange logo" class="container__img">
+                <img src="/img/logo.png" alt="Xchange logo" class="container__img">
                 
                 <form action="post" class="form">
                     <div class="form__input-box">
                             <div class="form__select-styling">
                                 <label for="base" class="form__label">Pick a currency:</label>
                                 <select id="base" name="base" class="form__select">
+                                     <button>
+                                        <selectedcontent></selectedcontent>
+                                    <img src="/img/chevron-down-solid-full.svg" class="select__picker-icon"></button>
                                     <option>placeholder</option>
                                     <option>placeholder</option>
 
@@ -37,6 +41,9 @@
                         <div class="form__select-styling">
                                 <label for="target" class="form__label">Pick a currency:</label>
                                 <select id="target" name="target" class="form__select">
+                                    <button>
+                                        <selectedcontent></selectedcontent>
+                                    <img src="/img/chevron-down-solid-full.svg" class="select__picker-icon"></button>
                                     <option>placeholder</option>
                                 </select>
                         </div>
@@ -48,7 +55,8 @@
 
                 <footer class="container__footer">
 
-                    <p>&copy; copyright</p>
+                    <p>&copy; zen-2222, <time datetime="2026">2026</time>
+                    </p>
                 
                 </footer>
 
