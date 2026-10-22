@@ -1,5 +1,3 @@
-
-
 const selectLabel=document.querySelectorAll('.form__label');
 const selectBoxFrom=document.querySelector('.form__select--base');
 const selectBoxTo=document.querySelector('.form__select--target');
@@ -22,11 +20,10 @@ async function getCurrencies() {
 
 const currencies= await getCurrencies();
 
-console.log(currencies);
 function makeOptionsHTML(currencies) {
     let html='';
     for(const [key,e] of Object.entries(currencies)){
-        html+=`<option value="${key}">(${key.toUpperCase()}) - ${e} </option>`;
+        html+=`<option value="${key}">(${key.toUpperCase()}) - ${e}</option>`;
     
 
 
@@ -34,9 +31,21 @@ function makeOptionsHTML(currencies) {
     return html;
 }
 
-selectBoxFrom.insertAdjacentHTML("beforeend",makeOptionsHTML(currencies));
+(function addSelectOptions(){
+    selectBoxFrom.insertAdjacentHTML("beforeend",makeOptionsHTML(currencies));
+    selectBoxTo.insertAdjacentHTML("beforeend",makeOptionsHTML(currencies));
+
+})();
 
 
+selectBoxFrom.addEventListener('change',(e)=>{
+    if(!e.target.closest('.form__select')) return;
+    
+    
+
+
+
+});
 
 
 
@@ -52,6 +61,7 @@ btn.addEventListener('click',(e)=>{
 
 
 });
+
 
 
 
