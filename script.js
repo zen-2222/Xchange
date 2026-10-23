@@ -7,9 +7,10 @@ const btn=document.querySelector('.button--swap');
 const currencyValueFrom=document.querySelector('.form__input--base');
 const currencyValueTo=document.querySelector('.form__input--target');
 
-const textShowcase=document.querySelector('showcase__currencies');
+const textShowcase=document.querySelector('.showcase__currencies');
 
 const currencies= await getCurrencies();
+textShowcase.innerHTML=`${Object.keys(currencies).length} currencies.`
 let exchangeRates,exchangeRate,swapFlag=0;
 //////////////////////////////////
 
@@ -24,11 +25,9 @@ async function getCurrencies() {
 
 function makeOptionsHTML(currencies) {
     let html='';
+
     for(const [key,e] of Object.entries(currencies)){
         html+=`<option value="${key}">(${key.toUpperCase()}) - ${e}</option>`;
-    
-
-
 }
     return html;
 }
