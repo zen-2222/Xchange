@@ -1,5 +1,4 @@
-const selectLabelFrom=document.querySelector('.form__label--base');
-const selectLabelTo=document.querySelector('.form__label--target');
+
 const selectBoxFrom=document.querySelector('.form__select--base');
 const selectBoxTo=document.querySelector('.form__select--target');
 
@@ -41,6 +40,8 @@ function makeOptionsHTML(currencies) {
 })();
 
 async function getExchangeRates(from,to){
+    if(!from) {currencyValueFrom.value="Please select a valid currency";return;}
+    if(!to) {currencyValueTo.value="Please select a valid currency";return;}
 
     const exchangeRatesPromise = await fetch(`https://cdn.jsdelivr.net/npm/@fawazahmed0/currency-api@latest/v1/currencies/${from}.json`);
     exchangeRates = await exchangeRatesPromise.json();
@@ -52,7 +53,6 @@ async function getExchangeRates(from,to){
 selectBoxFrom.addEventListener('change',(e)=>{
     if(!e.target.closest('.form__select')) return;
     
-    selectLabelFrom.remove();
     getExchangeRates(selectBoxFrom.value,selectBoxTo.value);
 
 });
@@ -61,8 +61,7 @@ selectBoxFrom.addEventListener('change',(e)=>{
 selectBoxTo.addEventListener('change',(e)=>{
     if(!e.target.closest('.form__select')) return;
     
-    selectLabelTo.remove();
-    getExchangeRates(+selectBoxFrom.value,+selectBoxTo.value);
+    getExchangeRates(selectBoxFrom.value,selectBoxTo.value);
 });
 
 
@@ -75,16 +74,14 @@ btn.addEventListener('click',(e)=>{
 
  
  swapFlag= !swapFlag;
-
-
 });
 
-(function addListeners(){
+(function addInputListeners(){
 currencyValueFrom.addEventListener('input',e=>{
     if(!e.target.closest('.form__input--base'))return;
 
     currencyValueTo.value= !swapFlag ? (+currencyValueFrom.value) * exchangeRate :(+currencyValueFrom.value) / exchangeRate; 
-
+    if(!+currencyValueTo.value) currencyValueTo.value="Please enter a valid currency";
 
 });
 
@@ -92,6 +89,7 @@ currencyValueTo.addEventListener('input',e=>{
     if(!e.target.closest('.form__input--target'))return;
 
     currencyValueFrom.value= !swapFlag ? (+currencyValueTo.value) / exchangeRate :(+currencyValueTo.value) * exchangeRate; 
+    if(!+currencyValueFrom.value) currencyValueFrom.value="Please enter a valid currency";
 
 
 });
