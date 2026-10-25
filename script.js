@@ -55,7 +55,7 @@ selectBoxFrom.addEventListener('change',(e)=>{
     if(!e.target.closest('.form__select')) return;
     
     getExchangeRates(selectBoxFrom.value,selectBoxTo.value);
-
+    swapFlag=0;
 });
 
 
@@ -63,6 +63,7 @@ selectBoxTo.addEventListener('change',(e)=>{
     if(!e.target.closest('.form__select')) return;
     
     getExchangeRates(selectBoxFrom.value,selectBoxTo.value);
+    swapFlag=0;
 });
 
 
