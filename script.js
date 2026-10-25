@@ -39,6 +39,7 @@ function makeOptionsHTML(currencies) {
 })();
 
 async function getExchangeRates(from,to){
+    try{
     if(!from) {currencyValueFrom.value="Please select a valid currency";return;}
     if(!to) {currencyValueTo.value="Please select a valid currency";return;}
 
@@ -46,6 +47,7 @@ async function getExchangeRates(from,to){
     exchangeRates = await exchangeRatesPromise.json();
     exchangeRate = exchangeRates[from][to];
     return exchangeRate; 
+}catch(err){}
 }
 
 
