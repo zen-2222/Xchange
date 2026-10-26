@@ -1,11 +1,3 @@
-// TODO:
-// 1> make the logic understandable, understand the logic
-// 2> add a readme
-// 3> fix the logic > ✅
-// 4> fix HTML  ✅
-// 5> fix swap arrow ✅
-
-
 const selectBoxFrom=document.querySelector('.form__select--base');
 const selectBoxTo=document.querySelector('.form__select--target');
 
@@ -66,12 +58,12 @@ async function getExchangeRates(from,to){
 }
 
 
-selectBoxFrom.addEventListener('input',(e)=>{
+selectBoxFrom.addEventListener('change',(e)=>{
     if(!e.target.closest('.form__select')) return;
     
     getExchangeRates(selectBoxFrom.value,selectBoxTo.value);
     swapFlag=0;
-    calculateExchangeValue(currencyValueTo,currencyValueFrom);
+    calculateExchangeValue(currencyValueTo,currencyValueFrom,1);
 
 });
 
@@ -84,10 +76,10 @@ function getRate(from,to){
 selectBoxTo.addEventListener('change',(e)=>{
     if(!e.target.closest('.form__select')) return;
     
-    getRate(selectBoxFrom.value,selectBoxTo.value);
-    swapFlag=0;
 
-    calculateExchangeValue(currencyValueFrom,currencyValueTo);
+    !swapFlag ? getExchangeRates(selectBoxFrom.value,selectBoxTo.value)  : getRate(selectBoxFrom.value,selectBoxTo.value)
+
+    calculateExchangeValue(currencyValueFrom,currencyValueTo,0);
 });
 
 
@@ -108,7 +100,7 @@ function calculateExchangeValue(input1,input2,directionFlag){
 
     input1.value= (directionFlag ^ swapFlag) ? ((+input2.value) * exchangeRate) : ((+input2.value) / exchangeRate); 
     
-    if(!+input1.value && +input1.value!=0 ) {input1.value="Please enter a valid currency";return;};
+    if(!+input1.value && +input1.value!=0 ) {input1.value="Please enter a valid amount";return;};
     input1.value=Number.parseFloat(input1.value).toFixed(3);
 
 }
