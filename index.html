@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Xchange</title>
+    <meta name="description" content="Exchange currencies with ease.">
      <link rel="icon" type="image/x-icon" href="img/icon.png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -13,24 +14,24 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="container">
+    <main class="container">
 
             <section class="container__content">
                 <img src="img/logo.png" alt="Xchange logo" class="container__img">
                 
-                <form action="post" class="form">
+                <form method="post" class="form" action="#">
                     <div class="form__input-box">
                             <div class="form__select-styling">
-                                <select id="base" name="base" class="form__select form__select--base">
-                                     <button>
-                                        <selectedcontent></selectedcontent>
-                                    <img src="img/chevron-down-solid-full.svg" class="select__picker-icon"></button>
+                                <select aria-label="Currency selection" id="base" name="base" class="form__select form__select--base">
+                                    <button>
+                                         <selectedcontent></selectedcontent>
+                                    <img src="img/chevron-down-solid-full.svg" class="select__picker-icon" alt=""></button>
                                     <option selected value="" disabled>Pick a currency</option>
 
 
                                 </select>
                             </div>
-                            <input  type="text" class="form__input form__input--base" name="base">
+                            <input  type="text" aria-label="Currency amount input box (base)" class="form__input form__input--base" name="base" placeholder="Enter an amount...">
                     </div>
                     
                     <button type="button" class="button button--swap">⇅</button>
@@ -38,15 +39,15 @@
                     <div class="form__input-box">
                     
                         <div class="form__select-styling">
-                                <select id="target" name="target" class="form__select form__select--target">
+                                <select id="target" aria-label="Currency selection" name="target" class="form__select form__select--target">
                                     <button>
                                         <selectedcontent></selectedcontent>
-                                    <img src="img/chevron-down-solid-full.svg" class="select__picker-icon"></button>
+                                    <img src="img/chevron-down-solid-full.svg" class="select__picker-icon" alt=""></button>
                                     <option selected value="" disabled>Pick a currency</option>
 
                                 </select>
                         </div>
-                        <input type="text" class="form__input form__input--target" name="target">
+                        <input type="text" aria-label="Currency amount input box (target)" class="form__input form__input--target" name="target" placeholder="Enter an amount...">
                     </div>
 
 
@@ -78,7 +79,7 @@
 
 
 
-    </div>
+    </main>
 
 
 

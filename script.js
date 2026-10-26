@@ -1,10 +1,9 @@
 // TODO:
 // 1> make the logic understandable, understand the logic
 // 2> add a readme
-// 3> fix the logic > 
-// 4> fix HTML
-// 5> fix swap arrow
-
+// 3> fix the logic > ✅
+// 4> fix HTML  ✅
+// 5> fix swap arrow ✅
 
 
 const selectBoxFrom=document.querySelector('.form__select--base');
@@ -18,7 +17,8 @@ const currencyValueTo=document.querySelector('.form__input--target');
 const textShowcase=document.querySelector('.showcase__currencies');
 
 const currencies= await getCurrencies();
-textShowcase.textContent=`${Object.keys(currencies).length} currencies.`
+textShowcase.textContent=`${Object.keys(currencies).length} currencies.`;
+
 let exchangeRates,exchangeRate,swapFlag=0;
 //////////////////////////////////
 
@@ -27,7 +27,7 @@ async function getCurrencies() {
     const currenciesPromise = await fetch('https://cdn.jsdelivr.net/npm/@fawazahmed0/currency-api@latest/v1/currencies.json');
     return currenciesPromise.json();
     }
-    catch(err) {alert("API Currently Offline");}
+    catch(err) {alert("main API currently offline");}
 
 }
 
@@ -111,9 +111,8 @@ function calculateExchangeValue(input1,input2,directionFlag){
     if(!+input1.value && +input1.value!=0 ) {input1.value="Please enter a valid currency";return;};
     input1.value=Number.parseFloat(input1.value).toFixed(3);
 
-
-
 }
+
 function addInputListeners(){
 currencyValueFrom.addEventListener('input',e=>{
 
@@ -132,7 +131,7 @@ currencyValueTo.addEventListener('input',e=>{
 addInputListeners();
 
 
-
+// Open picker upon pressing the green rectangle
 document.querySelectorAll('.form__select-styling').forEach(e=>e.addEventListener('click',x=>{
     const tar=x.target.closest('.form__select-styling');
     if(!tar) return;
