@@ -364,5 +364,7 @@ bottom:-.5rem;
     .form{flex-direction: column; margin-block: 3rem;}
     .form__input-box{width:100%;}
     .showcase__currencies{display:block;text-align: center;color:var(--color-select)}
+    .button--swap{transform:rotateZ(0deg);}
+
     
 }
