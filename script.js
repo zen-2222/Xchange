@@ -58,10 +58,10 @@ async function getExchangeRates(from,to){
 }
 
 
-selectBoxFrom.addEventListener('change',(e)=>{
+selectBoxFrom.addEventListener('change',async (e)=>{
     if(!e.target.closest('.form__select')) return;
     
-    getExchangeRates(selectBoxFrom.value,selectBoxTo.value);
+    await getExchangeRates(selectBoxFrom.value,selectBoxTo.value);
     swapFlag=0;
     calculateExchangeValue(currencyValueTo,currencyValueFrom,1);
 
@@ -73,12 +73,12 @@ function getRate(from,to){
     exchangeRate = exchangeRates[from][to];
 }
 
-selectBoxTo.addEventListener('change',(e)=>{
+selectBoxTo.addEventListener('change',async (e)=>{
     if(!e.target.closest('.form__select')) return;
     
 
-    !swapFlag ? getExchangeRates(selectBoxFrom.value,selectBoxTo.value)  : getRate(selectBoxFrom.value,selectBoxTo.value)
-
+    swapFlag ? await getExchangeRates(selectBoxFrom.value,selectBoxTo.value)  : getRate(selectBoxFrom.value,selectBoxTo.value)
+    swapFlag=0;
     calculateExchangeValue(currencyValueFrom,currencyValueTo,0);
 });
 
