@@ -1,132 +1,139 @@
-const selectBoxFrom=document.querySelector('.form__select--base');
-const selectBoxTo=document.querySelector('.form__select--target');
-
-const btn=document.querySelector('.button--swap');
-
-const currencyValueFrom=document.querySelector('.form__input--base');
-const currencyValueTo=document.querySelector('.form__input--target');
-
-const textShowcase=document.querySelector('.showcase__currencies');
-
-const currencies= await getCurrencies();
-textShowcase.textContent=`${Object.keys(currencies).length} currencies.`;
-
-let exchangeRates,exchangeRate,swapFlag=0;
-//////////////////////////////////
-
+const selectBoxFrom = document.querySelector('.form__select--base');
+const selectBoxTo = document.querySelector('.form__select--target');
+const btn = document.querySelector('.button--swap');
+const currencyValueFrom = document.querySelector('.form__input--base');
+const currencyValueTo = document.querySelector('.form__input--target');
+const textShowcase = document.querySelector('.showcase__currencies');
+const errorText = document.querySelector('.error');
+const currencies = await getCurrencies(); // Record<string,string> will crate object with all string keys and string values
+textShowcase.textContent = `${currencies ? Object.keys(currencies).length : '300'} currencies.`;
+if (!currencies)
+    throw new Error();
 async function getCurrencies() {
-    try{
-    const currenciesPromise = await fetch('https://cdn.jsdelivr.net/npm/@fawazahmed0/currency-api@latest/v1/currencies.json');
-    return currenciesPromise.json();
+    try {
+        let currenciesPromise = await fetch('https://cdn.jsdelivr.net/npm/@fawazahmed0/currency-api@latest/v1/currencies.json');
+        if (!currenciesPromise.ok) {
+            currenciesPromise = await fetch(`https://latest.currency-api.pages.dev/v1/currencies.json`);
+            if (!currenciesPromise.ok)
+                throw new Error();
+        }
+        return currenciesPromise.json();
     }
-    catch(err) {alert("main API currently offline");}
-
+    catch (err) {
+        showError(`Couldnt connect to API!`, 3);
+    }
 }
-
-
-
+let exchangeRates, exchangeRate, swapFlag = false, highestPriorty = 0;
+//////////////////////////////////////////
 function makeOptionsHTML(currencies) {
-    let html='';
-
-    for(const [key,e] of Object.entries(currencies)){
-        html+=`<option value="${key}">(${key.toUpperCase()}) - ${e}</option>`;
+    let html = '';
+    for (const [shortName, fullName] of Object.entries(currencies)) {
+        html += `<option value="${shortName}">(${shortName.toUpperCase()}) - ${fullName}</option>`;
     }
     return html;
 }
-
-function addSelectOptions(){
-    const html=makeOptionsHTML(currencies);
-    selectBoxFrom.insertAdjacentHTML("beforeend",html);
-    selectBoxTo.insertAdjacentHTML("beforeend",html);
-
+const addSelectOptions = () => {
+    const html = makeOptionsHTML(currencies);
+    selectBoxFrom.insertAdjacentHTML("beforeend", html);
+    selectBoxTo.insertAdjacentHTML("beforeend", html);
 };
-
 addSelectOptions();
-
-async function getExchangeRates(from,to){
-    try{
-    if(!from) {currencyValueFrom.value="Please select a valid currency";return;}
-    if(!to) {currencyValueTo.value="Please select a valid currency";}
-
-    const exchangeRatesPromise = await Promise.any([fetch(`https://cdn.jsdelivr.net/npm/@fawazahmed0/currency-api@latest/v1/currencies/${from}.json`),fetch(`https://latest.currency-api.pages.dev/v1/currencies/${from}.json`)]);
-    
-    exchangeRates = await exchangeRatesPromise.json();
-    
-    exchangeRate = exchangeRates[from][to];
-    
-}catch(err){} 
+// LOGIC ///////////////////////////////////////////////////////////////////////////////
+// gets exchange rates for the base currency and attempts to get exchange rate for the provided target 
+async function getExchangeRates(from, to) {
+    try {
+        errorText.style.opacity = `0`;
+        if (!from) {
+            showError("Please select a valid currency", 2);
+            return;
+        }
+        if (!to) {
+            showError("Please select a valid currency", 2);
+        }
+        let exchangeRatesPromise = await fetch(`https://cdn.jsdelivr.net/npm/@fawazahmed0/currency-api@latest/v1/currencies/${from}.json`);
+        if (!exchangeRatesPromise.ok) {
+            exchangeRatesPromise = await fetch(`https://latest.currency-api.pages.dev/v1/currencies/${from}.json`);
+            if (!exchangeRatesPromise.ok)
+                throw new Error("currency not found!");
+        }
+        exchangeRates = await exchangeRatesPromise.json();
+        // number or undefined (to doesnt exist)
+        exchangeRate = exchangeRates[from][to];
+    }
+    catch (error) {
+        showError(typeof error == "string" ? error : `Network error! : ${error.message}`, 2);
+    }
 }
-
-
-selectBoxFrom.addEventListener('change',async (e)=>{
-    if(!e.target.closest('.form__select')) return;
-    
-    await getExchangeRates(selectBoxFrom.value,selectBoxTo.value);
-    swapFlag=0;
-    calculateExchangeValue(currencyValueTo,currencyValueFrom,1);
-
+selectBoxFrom.addEventListener('change', async (e) => {
+    if (!e.target.closest('.form__select'))
+        return;
+    await getExchangeRates(selectBoxFrom.value, selectBoxTo.value);
+    swapFlag = false;
+    calculateExchangeValue(currencyValueTo, currencyValueFrom, true);
 });
-
-function getRate(from,to){
-    if(!from) return;
-
+function getRate(from, to) {
+    if (!from) {
+        showError("Please select a valid currency", 2);
+        return;
+    }
+    errorText.style.opacity = `0`;
     exchangeRate = exchangeRates[from][to];
 }
-
-selectBoxTo.addEventListener('change',async (e)=>{
-    if(!e.target.closest('.form__select')) return;
-    
-
-    swapFlag ? await getExchangeRates(selectBoxFrom.value,selectBoxTo.value)  : getRate(selectBoxFrom.value,selectBoxTo.value)
-    swapFlag=0;
-    calculateExchangeValue(currencyValueFrom,currencyValueTo,0);
+selectBoxTo.addEventListener('change', async (e) => {
+    if (!e.target.closest('.form__select'))
+        return;
+    swapFlag ? await getExchangeRates(selectBoxFrom.value, selectBoxTo.value) : getRate(selectBoxFrom.value, selectBoxTo.value);
+    swapFlag = false;
+    calculateExchangeValue(currencyValueFrom, currencyValueTo, false);
 });
-
-
 // Swap Functionality
-btn.addEventListener('click',(e)=>{
-
-    if(!e.target.closest('.button--swap')) return;
-
+btn.addEventListener('click', (e) => {
+    if (!e.target.closest('.button--swap'))
+        return;
     // Swap fields
-    [selectBoxFrom.value,selectBoxTo.value,currencyValueFrom.value,currencyValueTo.value] = [selectBoxTo.value,selectBoxFrom.value,currencyValueTo.value,currencyValueFrom.value];
-
- 
-    swapFlag= !swapFlag;
+    [selectBoxFrom.value, selectBoxTo.value, currencyValueFrom.value, currencyValueTo.value] = [selectBoxTo.value, selectBoxFrom.value, currencyValueTo.value, currencyValueFrom.value];
+    if (exchangeRate == undefined) {
+        showError('Please select valid currency', 2);
+        return;
+    }
+    exchangeRate = 1 / exchangeRate;
 });
-
-
-function calculateExchangeValue(input1,input2,directionFlag){
-
-    input1.value= (directionFlag ^ swapFlag) ? ((+input2.value) * exchangeRate) : ((+input2.value) / exchangeRate); 
-    
-    if(!+input1.value && +input1.value!=0 ) {input1.value="Please enter a valid amount";return;};
-    input1.value=Number.parseFloat(input1.value).toFixed(3);
-
+function calculateExchangeValue(input1, input2, directionFlag) {
+    if (exchangeRate == undefined) {
+        showError('Please select valid currency', 2);
+        return;
+    }
+    const result = (directionFlag) ? ((+input2.value) * exchangeRate) : ((+input2.value) / exchangeRate);
+    if (!result && result != 0) {
+        showError("Please enter a valid amount", 1);
+        return;
+    }
+    ;
+    input1.value = `${result}`;
+    errorText.style.opacity = `0`;
 }
-
-function addInputListeners(){
-currencyValueFrom.addEventListener('input',e=>{
-
-
-    calculateExchangeValue(currencyValueTo,currencyValueFrom,1);
-});
-
-currencyValueTo.addEventListener('input',e=>{
-
-    calculateExchangeValue(currencyValueFrom,currencyValueTo,0);
-
-
-});
-};
-
+function addInputListeners() {
+    currencyValueFrom.addEventListener('input', e => {
+        calculateExchangeValue(currencyValueTo, currencyValueFrom, true);
+    });
+    currencyValueTo.addEventListener('input', e => {
+        calculateExchangeValue(currencyValueFrom, currencyValueTo, false);
+    });
+}
+;
 addInputListeners();
-
-
 // Open picker upon pressing the green rectangle
-document.querySelectorAll('.form__select-styling').forEach(e=>e.addEventListener('click',x=>{
-    const tar=x.target.closest('.form__select-styling');
-    if(!tar) return;
-
+document.querySelectorAll('.form__select-styling').forEach(e => e.addEventListener('click', x => {
+    const tar = x.target.closest('.form__select-styling');
+    if (!tar)
+        return;
     tar.querySelector('.form__select').showPicker();
 }));
+function showError(msg, priority) {
+    if (priority > highestPriorty || errorText.style.opacity == `0`) {
+        errorText.style.opacity = `1`;
+        errorText.textContent = msg;
+        highestPriorty = priority;
+    }
+}
+export {};
